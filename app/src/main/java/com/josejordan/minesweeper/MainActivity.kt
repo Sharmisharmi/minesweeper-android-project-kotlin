@@ -1,10 +1,15 @@
 package com.josejordan.minesweeper
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.os.Handler
+import android.view.LayoutInflater
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 class MainActivity : AppCompatActivity(), MineSweeperView.OnScoreChangeListener, MineSweeperView.OnGameEndListener {
@@ -98,9 +103,26 @@ class MainActivity : AppCompatActivity(), MineSweeperView.OnScoreChangeListener,
             highScoreTextView.text = String.format(getString(R.string.high_score_text), highScore)
 
         }else{
-            resetGame()
+           showAlert()
         }
     }
+    @SuppressLint("MissingInflatedId")
+    fun showAlert() {
+        val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
+            .create()
+        val view = LayoutInflater.from(this).inflate(R.layout.dialog,null)
+        builder.setView(view)
+        builder.setCanceledOnTouchOutside(false)
+        builder.show()
 
+        var tryAgain: LinearLayout = view.findViewById(R.id.tryAgain)
+
+        tryAgain.setOnClickListener {
+            resetGame()
+        }
+
+
+
+    }
 }
 
